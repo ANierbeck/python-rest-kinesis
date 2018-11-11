@@ -25,22 +25,13 @@ def get_pet(pet_id):
 
 
 def put_pet(pet_id, pet):
-    p = db_session.query(orm.Pet).filter(orm.Pet.id == pet_id).one_or_none()
     pet['id'] = pet_id
-    if p is not None:
-        logging.info('Updating pet %s..', pet_id)
-        p.update(**pet)
-    else:
-        logging.info('Creating pet %s..', pet_id)
-        pet['created'] = datetime.datetime.utcnow()
-        db_session.add(orm.Pet(**pet))
-    db_session.commit()
 
     pet_string = json.dumps(pet,  indent=4, sort_keys=True, default=str)
 
     kinesis_client.put_record(StreamName='Pets', Data=pet_string.encode(), PartitionKey='partitionkey')
 
-    return NoContent, (200 if p is not None else 201)
+    return NoContent, (200)
 
 
 def delete_pet(pet_id):
@@ -57,7 +48,7 @@ def delete_pet(pet_id):
 kinesis_client = boto3.client('kinesis')
 
 logging.basicConfig(level=logging.INFO)
-db_session = orm.init_db('sqlite:///:memory:')
+db_session = orm.init_db('sqlite:///example.db')
 app = connexion.FlaskApp(__name__)
 app.add_api('swagger.yaml')
 
