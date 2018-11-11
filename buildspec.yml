@@ -12,5 +12,5 @@ artifacts:
   files:
   - orm.py
   - app.py
-  - bbackend_app.py
+  - backend_app.py
   - swagger.yaml
