@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+    - echo Build started on `date`
+    - pip install -r requirements.txt -t ./
+  post_build:
+    commands:
+    - echo Build completed on `date`
+artifacts:
+  files:
+  - orm.py
+  - app.py
+  - bbackend_app.py
+  - swagger.yaml
