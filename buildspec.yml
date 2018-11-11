@@ -14,3 +14,4 @@ artifacts:
   - app.py
   - backend_app.py
   - swagger.yaml
+  - venv/lib/*
